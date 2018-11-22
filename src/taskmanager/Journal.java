@@ -4,63 +4,35 @@
  * and open the template in the editor.
  */
 package taskmanager;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.io.*;
 import java.util.*;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
+
 
 
 
 public class Journal {
     
     
-    private List<ListElement> list = new LinkedList<ListElement>();    
+    private List<Task> list = new ArrayList<>();    
     
-    void add (String name, String description, Date date, String contacts)
+    void add (String name, String description, Date date, String contacts) 
             throws ParseException{
-        ListElement node = new ListElement();
-        node.name=name;
-        node.description=description;
-        node.date=date;
-        node.contacts=contacts;
+        Task node = new Task(name,description,date,contacts);        
         list.add(node);
     }
     
     void deleteElement(String name){
-        ListIterator<ListElement> iterator = list.listIterator();
-        Pattern pattern = Pattern.compile(name);
-        Matcher matcher;
-        while (iterator.hasNext()){
-            ListElement nextIt =iterator.next();
-            matcher=pattern.matcher(nextIt.name);
-            if(matcher.find()){
-                iterator.remove();
-                System.out.println("Deleted");}            
-        }
+       list.remove(getNode(name));       
     }
     
-    void deleteElement(int num){
-        ListIterator<ListElement> iterator = list.listIterator();
-        while (iterator.hasNext()&& num!=-1){
-            if (num == 0){
-                iterator.next();
-                iterator.remove();
-                System.out.println("Deleted");
-            } else{
-                iterator.next();
-            }
-            num--;
-        }
+    void deleteElement(int num){        
+        list.remove(num);        
     }
     
-    ListElement getNode(int num){
+    Task getNode(int num){
         try{
             return list.get(num);
         }
@@ -70,52 +42,42 @@ public class Journal {
         }
     }
     
-    ListElement getNode(String name){
-        ListIterator<ListElement> iterator = list.listIterator();
-        Pattern pattern = Pattern.compile(name);
-        Matcher matcher;
-        while (iterator.hasNext()){
-            ListElement nextIt =iterator.next();
-            matcher=pattern.matcher(nextIt.name);
-            if(matcher.find()){
-                return iterator.next(); 
+    Task getNode(String name){
+        for(Task task : list){
+            if(task.getName().equals(name)){
+                return task;
             }
         }
-        return null;
+        return null;        
     }
        
-    void printList(){
-       ListIterator<ListElement> iterator = list.listIterator();
-       while (iterator.hasNext()){
-           System.out.println(iterator.next().name);
-           System.out.println(iterator.previous().description);
-           System.out.println(iterator.next().date);
-           System.out.println(iterator.previous().contacts);
-           iterator.next();
-       }
-       
+    void printList(){ 
+       for (Task task : list){   
+           System.out.println(task.name);
+           System.out.println(task.description);
+           System.out.println(task.date);
+           System.out.println(task.contacts);           
+       }       
     }
     
     List<Date> scanDate(){
         List <Date> dateList = new LinkedList();
-        ListIterator<ListElement> iterator = list.listIterator();
-        while (iterator.hasNext()){
-            dateList.add(iterator.next().date);
+        for(Task task : list){
+            dateList.add(task.date);
         }
         return dateList;
     }    
     
-    void writeFile(String fileName)throws IOException, ClassNotFoundException{
-        ListIterator<ListElement> iterator = list.listIterator();
+    void writeFile(String fileName)throws IOException, ClassNotFoundException{        
         FileWriter writer = new FileWriter(fileName);
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm");         
         PrintWriter printWriter = new PrintWriter(writer);
-        while (iterator.hasNext()){
-            printWriter.println(iterator.next().name);
-            printWriter.println(iterator.previous().description);            
-            printWriter.println(format.format(iterator.next().date));
-            printWriter.println(iterator.previous().contacts);
-            iterator.next();
+        for(Task task : list){
+            printWriter.println(task.name);
+            printWriter.println(task.description);            
+            printWriter.println(format.format(task.date));
+            printWriter.println(task.contacts);
+            printWriter.println();
         }
         writer.close();
        
@@ -130,7 +92,8 @@ public class Journal {
             String description=scan.nextLine();           
             Date date = format.parse(scan.nextLine());
             String contacts=scan.nextLine();
-            add(name,description,date,contacts);
+            String emptyln = scan.nextLine();
+            add(name,description,date,contacts);            
         }
     }
 }

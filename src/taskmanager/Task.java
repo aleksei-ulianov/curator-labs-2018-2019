@@ -12,12 +12,19 @@ import java.util.Date;
  *
  * @author Nikita
  */
- public class ListElement implements Serializable{
+ public class Task implements Serializable{
         static final long serialVersionUID = -7588980448693010399L;
         String name;
         String description;
         Date date = new Date();
         String contacts;
+        
+        Task(String name, String description, Date date, String contacts){
+            this.name=name;
+            this.description=description;
+            this.date=date;
+            this.contacts=contacts;
+        }
         
         public String getName(){
             return name;
