@@ -34,8 +34,7 @@ public class TaskManager {
         jObject2.readFile("Journal.txt");
         jObject2.printList(); 
         /*System.out.println("===================");
-        jObject2.deleteElement("Task3");*/        
-       
+        jObject2.deleteElement("Task3");*/       
         
         Alert alarm = new Alert();
         alarm.recieveTime(jObject2);
