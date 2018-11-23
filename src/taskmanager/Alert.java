@@ -1,16 +1,14 @@
 
 package taskmanager;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.*;
 import java.io.*;
-import javax.swing.JFrame;
 import taskmanager.AlertFrame.*;
 import javax.sound.sampled.*;
 import java.net.MalformedURLException;
-import java.applet.*;
+
 
 public class Alert  {
     
@@ -29,7 +27,7 @@ public class Alert  {
         }
     }
     
-    List <Date> alarmTimeList = new LinkedList();
+    List<Date> alarmTimeList = new ArrayList<>();
     
     void recieveTime(Journal jObject)throws ParseException{
         alarmTimeList=jObject.scanDate();              
@@ -37,15 +35,14 @@ public class Alert  {
     
     boolean alarm(Journal jObject)
             throws MalformedURLException, LineUnavailableException, 
-            UnsupportedAudioFileException, IOException{ 
-        ListIterator <Date> iterator = alarmTimeList.listIterator();
+            UnsupportedAudioFileException, IOException{         
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm");
         Date currentTime = new Date();
         AlarmSound sound = new AlarmSound();
         int count=0;
-        while (iterator.hasNext()){
-            if (sdf.format(iterator.next()).equals(sdf.format(currentTime))){
-                ListElement node = jObject.getNode(count);                
+        for(Date date : alarmTimeList){
+            if (sdf.format(date).equals(sdf.format(currentTime))){
+                Task node = jObject.getNode(count);                
                 AlertJFrame ajf = new AlertJFrame();
                 ajf.setTextName(node.name);
                 ajf.setTextDesc(node.description);

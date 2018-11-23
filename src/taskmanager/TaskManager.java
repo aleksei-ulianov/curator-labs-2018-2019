@@ -1,7 +1,7 @@
 
 package taskmanager;
 
-import java.util.Scanner;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -18,30 +18,28 @@ public class TaskManager {
        //тестовые данные
         Date date = new Date();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm");
-        date = format.parse("1997-08-02 22-00");
+        date = format.parse("2018-11-22 20-00");
         Journal jObject = new Journal();
-        jObject.add("kek","kek ek ek",date,"11111111");
-        date = format.parse("1621-12-31 19-00");
-        jObject.add("lel3","2222222222",date,"22222");
-        date = format.parse("1451-12-31 20-30");
-        jObject.add("lel212","3333333333333333",date,"33333333");
-        date = new Date();//format.parse("2018-11-14 18-28");
-        jObject.add("lel3552","4444444 44444444444444",date,"4444444");
-        date = format.parse("1111-12-31 22-00");
-        jObject.add("lel1242","555555555555",date,"555555");
-        jObject.writeFile("kekushin.txt");
+        jObject.add("Task0","Cook dinner",date,"me");
+        date = format.parse("2018-11-22 21-00");
+        jObject.add("Task1","Eat dinner",date,"me");
+        date = format.parse("2018-11-22 23-00");
+        jObject.add("Task2","Sleep",date,"me");
+        date = format.parse("2018-11-22 18-22");
+        jObject.add("Task3","Call sanya",date,"+79382383838");
+        date = format.parse("2018-11-22 10-07");
+        jObject.add("Task4","Do it",date,"LaBuff");
+        jObject.writeFile("Journal.txt");
         Journal jObject2 = new Journal();
-        jObject2.readFile("kekushin.txt");
-        jObject2.printList(); /*
-        jObject2.deleteElement("kek");
-        jObject2.printList(); */
+        jObject2.readFile("Journal.txt");
+        jObject2.printList(); 
+        /*System.out.println("===================");
+        jObject2.deleteElement("Task3");*/       
         
-        System.out.println("===================");
         Alert alarm = new Alert();
         alarm.recieveTime(jObject2);
         try{
-            while(alarm.alarm(jObject2) == false){
-            
+            while(alarm.alarm(jObject2) == false){            
                 alarm.alarm(jObject2);
             }
         }
