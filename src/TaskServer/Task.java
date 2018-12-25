@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package taskmanager;
+package TaskServer;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -41,5 +41,22 @@ import java.util.Date;
         public String getContacts(){
             return contacts;
         }
+        
+        public void setName(String name){
+            this.name=name;
+        }
+        
+        public void setDescription(String description){
+            this.description=description;
+        }
+        
+        public void setDate(Date date){
+             this.date=date;
+        }
+        
+        public void setContacts(String contacts){
+            this.contacts=contacts;
+        }
+        
     }       
 
