@@ -15,16 +15,29 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 
 /**
- *
+ * Класс сервера для журнала задач
  * @author Nikita
  */
+
+
 public class TestServer {
+    /** Поле порт*/
     private int port;
     
+    /**
+     * Конструктор - создание нового объекта {@link TestServer} 
+     * с параметром устанавливающим значение поля {@link TestServer#port}
+     * @param port значение поля {@link TestServer#port}
+     */
     public TestServer(int port) {
         this.port = port;
     }
     
+    /**
+     * Метод запускающий сервер и окно графического интерфейса {@link GUI}
+     * @param gui
+     * @throws Exception
+     */
     public void run(GUI gui) throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup(); // (1)
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -51,6 +64,11 @@ public class TestServer {
         }
     }    
   
+    /**
+     * Метод main запускает окно графического интерфейса и сервер журнала задач
+     * @param args параметры запуска
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         GUI gui = new GUI();
         gui.InitJList();
