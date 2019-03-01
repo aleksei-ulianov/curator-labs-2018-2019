@@ -5,18 +5,33 @@
  */
 package TaskServer;
 
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.awt.*;
 import java.awt.event.*;
 import javax.swing.event.*;
-import javax.swing.table.*;
 import javax.swing.*;
-import java.util.*;
 import java.io.*;
 import java.text.ParseException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
 /**
- *
+ * Окно графического интерфейса журнала задач
  * @author Nikita
  */
 public class GUI extends javax.swing.JFrame {
@@ -25,16 +40,25 @@ public class GUI extends javax.swing.JFrame {
      * Creates new form GUI
      */
     Journal jObject = new Journal();
+    private static String fileFormat = "XML";
     
+    /**
+     * Initialising gui components and load tasks from file.
+     */
     public GUI() {
         initComponents();
-        try{
-               jObject.readFile("Journal.txt");
-           }
-        catch(IOException ex){
-           }
-        catch(ParseException ex){
-           }
+        readXML("Config.xml");
+        if("XML".equals(fileFormat)){
+            jRadioButton1.setSelected(true);
+            jObject.readXML("Journal.xml");
+        } else if("TXT".equals(fileFormat)){
+            try{
+                jRadioButton2.setSelected(true);
+                jObject.readFile("Journal.txt");
+            } catch(IOException | ParseException ex){
+                System.err.println("Coulndn`t read file");
+            }
+        }      
     }    
 
     /**
@@ -46,8 +70,6 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
         jFrame1 = new javax.swing.JFrame();
         label10 = new java.awt.Label();
         label11 = new java.awt.Label();
@@ -82,6 +104,23 @@ public class GUI extends javax.swing.JFrame {
         label23 = new java.awt.Label();
         button2 = new java.awt.Button();
         jLabel2 = new javax.swing.JLabel();
+        jFrame6 = new javax.swing.JFrame();
+        label24 = new java.awt.Label();
+        label25 = new java.awt.Label();
+        button3 = new java.awt.Button();
+        jLabel3 = new javax.swing.JLabel();
+        jFrame7 = new javax.swing.JFrame();
+        label26 = new java.awt.Label();
+        label27 = new java.awt.Label();
+        button4 = new java.awt.Button();
+        jLabel4 = new javax.swing.JLabel();
+        jFrame2 = new javax.swing.JFrame();
+        jLabel5 = new javax.swing.JLabel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jLabel6 = new javax.swing.JLabel();
+        jButton8 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         label1 = new java.awt.Label();
         label2 = new java.awt.Label();
@@ -100,13 +139,9 @@ public class GUI extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-
-        jMenu1.setText("jMenu1");
-
-        jMenu2.setText("jMenu2");
 
         jFrame1.setResizable(false);
         jFrame1.setSize(new java.awt.Dimension(330, 300));
@@ -381,6 +416,159 @@ public class GUI extends javax.swing.JFrame {
                 .addGap(19, 19, 19))
         );
 
+        jFrame6.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        jFrame6.setTitle("Error");
+        jFrame6.setAlwaysOnTop(true);
+        jFrame6.setResizable(false);
+        jFrame6.setSize(new java.awt.Dimension(354, 181));
+
+        label24.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        label24.setText("Error");
+
+        label25.setText("You can`t write more than 15 symbols in name field");
+
+        button3.setLabel("Ok");
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/TaskServer/err.png"))); // NOI18N
+
+        javax.swing.GroupLayout jFrame6Layout = new javax.swing.GroupLayout(jFrame6.getContentPane());
+        jFrame6.getContentPane().setLayout(jFrame6Layout);
+        jFrame6Layout.setHorizontalGroup(
+            jFrame6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrame6Layout.createSequentialGroup()
+                .addGroup(jFrame6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jFrame6Layout.createSequentialGroup()
+                        .addGap(112, 112, 112)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(label24, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jFrame6Layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrame6Layout.createSequentialGroup()
+                .addGap(0, 41, Short.MAX_VALUE)
+                .addComponent(label25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
+        );
+        jFrame6Layout.setVerticalGroup(
+            jFrame6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrame6Layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(jFrame6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(label24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(label25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
+        );
+
+        jFrame7.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        jFrame7.setTitle("Error");
+        jFrame7.setAlwaysOnTop(true);
+        jFrame7.setResizable(false);
+        jFrame7.setSize(new java.awt.Dimension(354, 181));
+
+        label26.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        label26.setText("Error");
+
+        label27.setText("You entered incorrect date (YYYY-MM-DD hh-mm)");
+
+        button4.setLabel("Ok");
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/TaskServer/err.png"))); // NOI18N
+
+        javax.swing.GroupLayout jFrame7Layout = new javax.swing.GroupLayout(jFrame7.getContentPane());
+        jFrame7.getContentPane().setLayout(jFrame7Layout);
+        jFrame7Layout.setHorizontalGroup(
+            jFrame7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrame7Layout.createSequentialGroup()
+                .addGroup(jFrame7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jFrame7Layout.createSequentialGroup()
+                        .addGap(112, 112, 112)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(label26, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jFrame7Layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrame7Layout.createSequentialGroup()
+                .addGap(0, 52, Short.MAX_VALUE)
+                .addComponent(label27, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
+        );
+        jFrame7Layout.setVerticalGroup(
+            jFrame7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrame7Layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(jFrame7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(label26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(label27, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
+        );
+
+        jFrame2.setTitle("Settings");
+        jFrame2.setResizable(false);
+        jFrame2.setSize(new java.awt.Dimension(285, 285));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel5.setText("Settings");
+
+        jRadioButton1.setText("XML");
+
+        jRadioButton2.setText("TXT");
+
+        jLabel6.setText("Select file format:");
+
+        jButton8.setText("Apply");
+
+        jButton9.setText("Cancel");
+
+        javax.swing.GroupLayout jFrame2Layout = new javax.swing.GroupLayout(jFrame2.getContentPane());
+        jFrame2.getContentPane().setLayout(jFrame2Layout);
+        jFrame2Layout.setHorizontalGroup(
+            jFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrame2Layout.createSequentialGroup()
+                .addGap(57, 57, 57)
+                .addGroup(jFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jRadioButton2)
+                    .addComponent(jRadioButton1)
+                    .addComponent(jLabel6))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrame2Layout.createSequentialGroup()
+                .addGap(0, 98, Short.MAX_VALUE)
+                .addGroup(jFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5)
+                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22))
+        );
+        jFrame2Layout.setVerticalGroup(
+            jFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrame2Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(jLabel5)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jRadioButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jRadioButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                .addGroup(jFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Task Manager");
         setResizable(false);
@@ -475,6 +663,9 @@ public class GUI extends javax.swing.JFrame {
 
         jMenu3.setText("File");
 
+        jMenuItem3.setText("Settings");
+        jMenu3.add(jMenuItem3);
+
         jMenuItem1.setText("New Task");
         jMenu3.add(jMenuItem1);
 
@@ -483,9 +674,6 @@ public class GUI extends javax.swing.JFrame {
         jMenu3.add(jMenuItem2);
 
         jMenuBar1.add(jMenu3);
-
-        jMenu4.setText("Edit");
-        jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
 
@@ -582,7 +770,7 @@ public class GUI extends javax.swing.JFrame {
 }
     
     class CreateMouseListener implements MouseListener{
-      DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm"); 
+      DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
       public void mouseClicked(MouseEvent e) {        
       }
       public void mousePressed(MouseEvent e) {
@@ -598,7 +786,7 @@ public class GUI extends javax.swing.JFrame {
       }
     }
     class CreateButtonTask extends SwingWorker<Void, Void> {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm"); 
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
         
         boolean nameCheck(){
             if(textField1.getText().length()<=15){
@@ -620,14 +808,22 @@ public class GUI extends javax.swing.JFrame {
                 jFrame5.setVisible(true);
             }          
             InitJList();
-            try{
-              jObject.writeFile("Journal.txt");
-            } catch(IOException ex){
-              System.err.println(ex);
-             } catch(ClassNotFoundException ex){
-              System.err.println(ex);
-             }
-            clearFrame();          
+            if("TXT".equals(fileFormat)){
+                try{
+                  jObject.writeFile("Journal.txt");
+                } catch(IOException ex){
+                  System.err.println(ex);
+                } catch(ClassNotFoundException ex){
+                  System.err.println(ex);
+                }
+            }
+            if("XML".equals(fileFormat)){
+                try{
+                    jObject.writeXML();
+                } catch(ParserConfigurationException | TransformerException ex){                    
+                }
+            }
+            clearFrame();                      
             return null;
              
         }
@@ -638,19 +834,27 @@ public class GUI extends javax.swing.JFrame {
     }
     
     class DeleteMouseListener implements MouseListener{
-      DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm"); 
+      DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
       public void mouseClicked(MouseEvent e) {        
       }
       public void mousePressed(MouseEvent e) {
              if(jList1.getSelectedIndex()>=0){
                 jObject.deleteElement(jList1.getSelectedIndex());
                 InitJList();
+                if("TXT".equals(fileFormat)){
                 try{
-                    jObject.writeFile("Journal.txt");
+                  jObject.writeFile("Journal.txt");
                 } catch(IOException ex){
-                     System.err.println(ex);
+                  System.err.println(ex);
                 } catch(ClassNotFoundException ex){
-                     System.err.println(ex);
+                  System.err.println(ex);
+                }
+                }
+                if("XML".equals(fileFormat)){
+                    try{
+                        jObject.writeXML();
+                    } catch(ParserConfigurationException | TransformerException ex){                    
+                    }
                 }
             }
             jList1.clearSelection();
@@ -668,7 +872,7 @@ public class GUI extends javax.swing.JFrame {
     }
     
     class EditMouseListener implements MouseListener{
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm"); 
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
         public void mouseClicked(MouseEvent e) {        
         }
         public void mousePressed(MouseEvent e) {            
@@ -702,11 +906,11 @@ public class GUI extends javax.swing.JFrame {
     }
     
     class ModifyMouseListener implements MouseListener{
-      DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm"); 
+      DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
       public void mouseClicked(MouseEvent e) {        
       }
       public void mousePressed(MouseEvent e) {
-            jButton6.setEnabled(true);
+            jButton6.setEnabled(false);
             ModifyButtonTask task = new ModifyButtonTask();
             task.execute();
       }
@@ -718,27 +922,49 @@ public class GUI extends javax.swing.JFrame {
       }
     }
     class ModifyButtonTask extends SwingWorker<Void, Void> {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm"); 
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+        
+        boolean nameCheck(){
+            if(textField5.getText().length()<=15){
+                return true;
+            } else{
+                jFrame6.setVisible(true);
+                return false;
+            }
+        }        
+        
         @Override
         public Void doInBackground() {
+            
             if(jList1.getSelectedIndex()>=0){
-                jObject.getNode(jList1.getSelectedIndex()).setName(textField5.getText());
-                jObject.getNode(jList1.getSelectedIndex()).setDescription(textField6.getText());
-                try{
-                    jObject.getNode(jList1.getSelectedIndex()).setDate(format.parse(textField7.getText()));
-                } catch(ParseException ex){
-                    System.err.println("Parse Exception");
-                }
-                jObject.getNode(jList1.getSelectedIndex()).setContacts(textField8.getText());
-                try{
-                    jObject.writeFile("Journal.txt");
-                } catch(IOException ex){
-                     System.err.println(ex);
-                } catch(ClassNotFoundException ex){
-                     System.err.println(ex);
-                }
-            jList1.clearSelection();
-            clearFrame();                
+                if(nameCheck()){
+                    jObject.getNode(jList1.getSelectedIndex()).setName(textField5.getText());
+                    jObject.getNode(jList1.getSelectedIndex()).setDescription(textField6.getText());
+                    try{
+                        jObject.getNode(jList1.getSelectedIndex()).setDate(format.parse(textField7.getText()));
+                    } catch(ParseException ex){
+                        jFrame7.setVisible(true);
+                    }
+                    jObject.getNode(jList1.getSelectedIndex()).setContacts(textField8.getText());
+                    if("TXT".equals(fileFormat)){
+                        try{
+                          jObject.writeFile("Journal.txt");
+                        } catch(IOException ex){
+                          System.err.println(ex);
+                        } catch(ClassNotFoundException ex){
+                          System.err.println(ex);
+                        }
+                    }
+                    if("XML".equals(fileFormat)){
+                        try{
+                            jObject.writeXML();
+                        } catch(ParserConfigurationException | TransformerException ex){                    
+                        }
+                    }
+                    jObject.getNode(jList1.getSelectedIndex()).setChecked(false);
+                    jList1.clearSelection();
+                    clearFrame();
+                }                
             }    
             return null;             
         }
@@ -777,11 +1003,30 @@ public class GUI extends javax.swing.JFrame {
       public void mouseExited(MouseEvent e) {
       }
     }
+    class Ok2ButtonMouseListener implements MouseListener{
+        public void mouseClicked(MouseEvent e) {        
+        }
+        public void mousePressed(MouseEvent e) {
+            textField5.setText(label6.getText());
+            textField6.setText(label7.getText());
+            textField7.setText(label8.getText());
+            textField8.setText(label9.getText());
+            jFrame6.dispose();
+            jFrame7.dispose();
+            jFrame3.setVisible(true);
+        }
+        public void mouseReleased(MouseEvent e) {
+        }
+        public void mouseEntered(MouseEvent e) {
+        }
+        public void mouseExited(MouseEvent e) {
+        }
+    }
    
     
     class jListSelectListener implements ListSelectionListener{
        public void valueChanged(ListSelectionEvent e){
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm"); 
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
             if(jList1.getSelectedIndex()>=0){
                 label6.setText(jObject.getNode(jList1.getSelectedIndex()).getName());
                 label7.setText(jObject.getNode(jList1.getSelectedIndex()).getDescription());
@@ -791,9 +1036,142 @@ public class GUI extends javax.swing.JFrame {
        }      
     }
     
+    class SettingsMouseListener implements MouseListener{
+        public void mouseClicked(MouseEvent e) {        
+        }
+        public void mousePressed(MouseEvent e) {
+            jButton9.setEnabled(false);
+            SettingsButtonTask task = new SettingsButtonTask();
+            task.execute();
+        }
+        public void mouseReleased(MouseEvent e) {
+        }
+        public void mouseEntered(MouseEvent e) {
+        }
+        public void mouseExited(MouseEvent e) {
+        }
+    }
+    class SettingsButtonTask extends SwingWorker<Void, Void> {
+   
+        @Override
+        public Void doInBackground() {  
+            jFrame2.setVisible(true);
+            return null;
+        }
+        @Override
+        public void done() {
+            jButton9.setEnabled(true);           
+        }
+    }
+    
+    class XMLRadioMouseListener implements MouseListener{
+        public void mouseClicked(MouseEvent e) {        
+        }
+        public void mousePressed(MouseEvent e) {
+            jRadioButton2.setSelected(false);
+        }
+        public void mouseReleased(MouseEvent e) {
+        }
+        public void mouseEntered(MouseEvent e) {
+        }
+        public void mouseExited(MouseEvent e) {
+        }
+    }
+    class TXTRadioMouseListener implements MouseListener{
+        public void mouseClicked(MouseEvent e) {        
+        }
+        public void mousePressed(MouseEvent e) {
+            jRadioButton1.setSelected(false);
+        }
+        public void mouseReleased(MouseEvent e) {
+        }
+        public void mouseEntered(MouseEvent e) {
+        }
+        public void mouseExited(MouseEvent e) {
+        }
+    }
+    
+    class ApplyMouseListener implements MouseListener{
+        public void mouseClicked(MouseEvent e) {        
+        }
+        public void mousePressed(MouseEvent e) {
+            jButton8.setEnabled(false);
+            ApplyButtonTask task = new ApplyButtonTask();
+            task.execute();
+        }
+        public void mouseReleased(MouseEvent e) {
+        }
+        public void mouseEntered(MouseEvent e) {
+        }
+        public void mouseExited(MouseEvent e) {
+        }
+    }
+    class ApplyButtonTask extends SwingWorker<Void, Void> {
+   
+        @Override
+        public Void doInBackground() { 
+            Thread t = new Thread(new XMLConfigCreator());
+            t.start();
+            return null;
+        }
+        @Override
+        public void done() {
+            jButton8.setEnabled(true);
+            jFrame2.setVisible(false);
+        }
+    }
+    
+    class XMLConfigCreator implements Runnable{
+        public void run(){
+            try{                
+                DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();            
+                DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();            
+                Document document = documentBuilder.newDocument();
+                Element root = document.createElement("Config");
+                document.appendChild(root);
+                Element fileFormat = document.createElement("FileFormat");
+                root.appendChild(fileFormat);
+                if(jRadioButton1.isSelected()){
+                    fileFormat.setAttribute("Format","XML");
+                }
+                if(jRadioButton2.isSelected()){
+                    fileFormat.setAttribute("Format","TXT");
+                }
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                Transformer transformer = transformerFactory.newTransformer();
+                transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+                DOMSource domSource = new DOMSource(document);
+                StreamResult streamResult = new StreamResult(new File("Config.xml"));
+                transformer.transform(domSource, streamResult); 
+                System.out.println("Config saved");
+            } catch(ParserConfigurationException | TransformerException ex){               
+            }
+        }
+    }
+    private static class XMLHandler extends DefaultHandler {
+        @Override
+        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+            if (qName.equals("FileFormat")) {
+                fileFormat = attributes.getValue("Format");
+            }
+        }
+    }
+    
+    public void readXML(String fileName){
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        try{
+            SAXParser parser = factory.newSAXParser();
+            XMLHandler handler = new XMLHandler();
+            parser.parse(new File(fileName), handler);            
+        } catch(ParserConfigurationException | SAXException | IOException ex){
+        }       
+    }
     
     
-    
+    /**
+     * Метод добавляет всем существующим кнопкам необходимые реализации {@link MouseListener}
+     */
     public void InitListeners(){
         jListSelectListener jLSL = new jListSelectListener(); 
         jMenuItem2.addMouseListener(new MenuItem2MouseListener());        
@@ -807,8 +1185,18 @@ public class GUI extends javax.swing.JFrame {
         jButton7.addMouseListener(new CancelMouseListener()); 
         button1.addMouseListener(new OkButtonMouseListener());
         button2.addMouseListener(new OkButtonMouseListener());
+        button3.addMouseListener(new Ok2ButtonMouseListener());
+        button4.addMouseListener(new Ok2ButtonMouseListener());
+        jMenuItem3.addMouseListener(new SettingsMouseListener());
+        jButton8.addMouseListener(new ApplyMouseListener());
+        jButton9.addMouseListener(new CancelMouseListener());
+        jRadioButton1.addMouseListener(new XMLRadioMouseListener());
+        jRadioButton2.addMouseListener(new TXTRadioMouseListener());        
     }
     
+    /**
+     * Метод обновляет список задач в окне журнала задач {@link GUI}
+     */
     public void InitJList(){
         DefaultListModel dlm = new DefaultListModel();
         for(int i=0;i<jObject.getCount();i++){
@@ -818,9 +1206,13 @@ public class GUI extends javax.swing.JFrame {
         jList1.clearSelection();
     }
 
+    /**
+     * Метод очищает окна создания новой задачи и редоктирования существующей задачи
+     */
     public void clearFrame(){
         jFrame1.dispose();        
         jFrame3.dispose();
+        jFrame2.setVisible(false);
         textField1.setText("");
         textField2.setText("");
         textField3.setText("");
@@ -832,12 +1224,33 @@ public class GUI extends javax.swing.JFrame {
         jButton5.getModel().setPressed(false);
     }
     
+    /**
+     * Метод получения объекта журнала задач {@link Journal}
+     * @return возвращает объект журнала задач
+     */
     public Journal getJournal(){
         return jObject;
     }
     
+    /**
+     * Метод снимает выделение элемента списка
+     */
+    public void deSelect(){
+        jList1.clearSelection();
+    }
     
-    
+    public String getConfigSelection(){
+        String selection;
+        if("TXT".equals(fileFormat)){
+            selection="TXT";
+            return selection;
+        }
+        if("XML".equals(fileFormat)){
+            selection="XML";
+            return selection;        
+        }
+        return null;
+    }
     
     
     
@@ -889,6 +1302,8 @@ public class GUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button button1;
     private java.awt.Button button2;
+    private java.awt.Button button3;
+    private java.awt.Button button4;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -896,22 +1311,31 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JFrame jFrame1;
+    private javax.swing.JFrame jFrame2;
     private javax.swing.JFrame jFrame3;
     private javax.swing.JFrame jFrame4;
     private javax.swing.JFrame jFrame5;
+    private javax.swing.JFrame jFrame6;
+    private javax.swing.JFrame jFrame7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JList<String> jList1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private java.awt.Label label1;
     private java.awt.Label label10;
@@ -929,6 +1353,10 @@ public class GUI extends javax.swing.JFrame {
     private java.awt.Label label21;
     private java.awt.Label label22;
     private java.awt.Label label23;
+    private java.awt.Label label24;
+    private java.awt.Label label25;
+    private java.awt.Label label26;
+    private java.awt.Label label27;
     private java.awt.Label label3;
     private java.awt.Label label4;
     private java.awt.Label label5;

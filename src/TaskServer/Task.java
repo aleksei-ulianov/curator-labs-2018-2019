@@ -5,19 +5,23 @@
  */
 package TaskServer;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
- *
+ * Класс задачи со свойствами <b>name</b>, <b>description</b>, <b>date</b>, <b>contacts</b>, <b>checked</b>.
  * @author Nikita
  */
- public class Task implements Serializable{
-        static final long serialVersionUID = -7588980448693010399L;
+ public class Task{
+        /** Поле имя задачи */
         String name;
+        /** Поле описание задачи */
         String description;
+        /** Поле дата задачи */
         Date date = new Date();
+        /** Поле контакты задачи */
         String contacts;
+        /** Поле флаг проверки задачи */
+        boolean checked = false;
         
         Task(String name, String description, Date date, String contacts){
             this.name=name;
@@ -26,36 +30,84 @@ import java.util.Date;
             this.contacts=contacts;
         }
         
-        public String getName(){
+    /**
+     * Метод возвращает строку с именем задачи
+     * @return возвращает строку с именем задачи
+     */
+    public String getName(){
             return name;
         }
         
-        public String getDescription(){
+     /**
+     * Метод возвращает строку с описанием задачи
+     * @return возвращает строку с описанием задачи
+     */
+    public String getDescription(){
             return description;
         }
         
-        public Date getDate(){
+     /**
+     * Метод возвращает дату задачи
+     * @return возвращает дату Date задачи
+     */
+    public Date getDate(){
             return date;
         }
         
-        public String getContacts(){
+     /**
+     * Метод возвращает строку с контактами задачи
+     * @return возвращает строку с контактами задачи
+     */
+    public String getContacts(){
             return contacts;
         }
         
-        public void setName(String name){
+    /**
+     * Метод устанавливает значение имени задачи
+     * @param name новое имя задачи
+     */
+    public void setName(String name){
             this.name=name;
         }
         
-        public void setDescription(String description){
+    /**
+     * Метод устанавливает значение описания задачи
+     * @param description новое описание задачи
+     */
+    public void setDescription(String description){
             this.description=description;
         }
         
-        public void setDate(Date date){
+    /**
+     * Метод устанавливает значение даты задачи
+     * @param date новая дата задачи
+     */
+    public void setDate(Date date){
              this.date=date;
         }
         
-        public void setContacts(String contacts){
+    /**
+     * Метод устанавливает значение контактов задачи
+     * @param contacts новые контакты задачи
+     */
+    public void setContacts(String contacts){
             this.contacts=contacts;
+        }
+        
+    /**
+     * Метод помечает задачу как проверенную или непроверенную
+     * @param flag флаг
+     */
+    public void setChecked (boolean flag){
+            this.checked = flag;
+        }
+        
+    /**
+     * Метод возвращает значение флага, показывая проверена задача или нет
+     * @return возвращает значение флага
+     */
+    public boolean isChecked(){
+            return checked;
         }
         
     }       
